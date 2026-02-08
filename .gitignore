@@ -1,0 +1,47 @@
+# === Binaries / Build Outputs ===
+# Executable files (Windows, Linux, macOS)
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+# Nama binary umum (sesuaikan jika output build kamu berbeda)
+app
+main
+server
+
+# === Dependency ===
+# Folder vendor sebaiknya di-ignore, cukup commit go.mod dan go.sum
+vendor/
+
+# === Configuration & Secrets ===
+# Environment variables
+.env
+*.env
+.env.local
+# File konfigurasi yang mengandung password/secret
+internal/configs/config.yaml
+# Docker secrets & overrides
+db_password.txt
+docker-compose.override.yaml
+
+# === Testing & Debugging ===
+# Test binaries build dengan `go test -c`
+*.test
+# Output dari go coverage & profiling
+*.out
+*.prof
+
+# === Archives ===
+# File kompresi seperti migrate.tar.gz yang kamu tanyakan
+*.tar.gz
+*.zip
+*.7z
+*.rar
+
+# === IDE & OS Specific ===
+.vscode/
+.idea/
+*.swp
+.DS_Store
+Thumbs.db
