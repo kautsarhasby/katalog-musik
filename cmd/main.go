@@ -5,6 +5,10 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/kautsarhasby/katalog-musik/internal/configs"
+	membershipHandler "github.com/kautsarhasby/katalog-musik/internal/handlers/memberships"
+	"github.com/kautsarhasby/katalog-musik/internal/models/memberships"
+	membershipRepo "github.com/kautsarhasby/katalog-musik/internal/repository/memberships"
+	membershipSvc "github.com/kautsarhasby/katalog-musik/internal/service/memberships"
 	"github.com/kautsarhasby/katalog-musik/pkg/internalsql"
 )
 
@@ -28,13 +32,20 @@ func main() {
 	cfg = configs.Get()
 	db, err := internalsql.Connect(cfg.Database.DataSourceName)
 	if err != nil {
-		log.Fatal("Faile to initialize database")
+		log.Fatal("Failed to initialize database")
 	}
+	db.AutoMigrate(&memberships.User{})
 
 	r.Use(gin.Logger())
 	r.Use(gin.Recovery())
 
-	if err := r.Run(cfg.Service.Ports); err != nil {
+	// Users
+	membershipsRepository := membershipRepo.NewRepository(db)
+	membershipsService := membershipSvc.NewService(cfg, membershipsRepository)
+	membershipsHandler := membershipHandler.NewHandler(r, membershipsService)
+	membershipsHandler.RegisterRoute()
+
+	if err := r.Run(cfg.Service.Port); err != nil {
 		log.Fatalf("Failed to run server %v", err)
 	}
 
