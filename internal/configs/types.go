@@ -6,7 +6,7 @@ type (
 	}
 
 	Service struct {
-		Ports     string
+		Port      string
 		SecretKey string
 	}
 
